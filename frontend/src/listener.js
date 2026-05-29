@@ -23,10 +23,7 @@ dropdown.addEventListener("change", (event) => {
 
 // when the user skips forward in the video
 player.addEventListener("seeking", (event) => {
-  if (isSyncing) {
-    isSyncing = false;
-    return;
-  }
+  if (isSyncing) return; // let seeked make it false so theres no infinite loop
 
   const currentTime = player.currentTime;
   console.log("Locally seeking video to:", currentTime);

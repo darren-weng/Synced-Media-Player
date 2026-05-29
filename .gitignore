@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Video files
+*.mp4
+
+# Optional common extras
+.env
+.DS_Store
