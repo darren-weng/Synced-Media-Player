@@ -16,8 +16,34 @@ const videoDir = path.join(__dirname, "videos");
 app.use(express.static(htmlDir));
 app.use("/videos", express.static(videoDir));
 
+function broadcastUserCount(io) {
+  const totalUsers = io.sockets.sockets.size;
+
+  // Count how many of the currently connected sockets are ready
+  let readyCount = 0;
+  io.sockets.sockets.forEach((socket) => {
+      if (socket.data.isReady) {
+          readyCount++;
+      }
+  });
+
+  io.emit('user-count', { ready: readyCount, total: totalUsers });
+}
+
 io.on('connection', (socket) => {
+    socket.data.isReady = false; // Initialize the ready status for this socket
+
     console.log('A user connected via real-time web socket!');
+    io.emit('user-connected', 'Guest has joined the room.');
+
+    //? update users count
+    broadcastUserCount(io);
+
+    // react to ready click
+    socket.on('user-ready-click', () => {
+        socket.data.isReady = true; // Mark this socket as ready
+        broadcastUserCount(io); // Update all clients with the new count
+    });
 
     // 3. Listen for when a user changes their video dropdown
     socket.on('video-selected-client', (videoName) => {
@@ -47,6 +73,8 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('User disconnected.');
+
+        io.emit('user-disconnected', 'Guest has left the room.');
     });
 });
 

@@ -1,0 +1,76 @@
+/* Main layout container */
+.app-container {
+display: grid;
+grid-template-columns: 1fr; /* Stacked on mobile */
+gap: 20px;
+max-width: 1200px;
+margin: 20px auto;
+padding: 0 15px;
+font-family: sans-serif;
+}
+
+/* Video section (Left Column) */
+.video-section {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+#videoPlayer {
+width: 100%; /* Makes video responsive */
+height: auto;
+background: #000;
+}
+
+/* Controls area underneath the video */
+.controls-area {
+display: flex;
+gap: 10px;
+align-items: center;
+}
+
+#videoList {
+padding: 8px;
+flex-grow: 1;
+}
+
+#readyButton {
+padding: 8px 16px;
+cursor: pointer;
+}
+
+/* Chat section (Right Column) */
+.chat-section {
+border: 1px solid #ccc;
+border-radius: 4px;
+display: flex;
+flex-direction: column;
+height: 450px; /* Gives the chat area a fixed height */
+background: #f9f9f9;
+}
+
+.chat-header {
+padding: 10px;
+border-bottom: 1px solid #ccc;
+background: #eee;
+font-weight: bold;
+}
+
+.chat-messages {
+flex-grow: 1;
+padding: 10px;
+overflow-y: auto;
+}
+
+/* Desktop Grid Setup (Screens wider than 768px) */
+@media (min-width: 768px) {
+.app-container {
+  grid-template-columns: 2fr 1fr; /* Video takes 2 parts, Chat takes 1 part */
+  align-items: start;
+}
+
+#videoPlayer {
+  height: 450px; /* Matches the chat height on desktop */
+  object-fit: contain;
+}
+}

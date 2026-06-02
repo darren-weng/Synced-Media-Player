@@ -4,20 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <select id="videoList">
-    <option value="preview">Loading videos...</option>
-  </select>
 
-  <video id="videoPlayer" controls width="640">
-    <source id="videoSource" src="" type="video/mp4">
-  </video>
+  <div class="app-container">
+    
+    <div class="video-container">
+      <video id="videoPlayer" controls width="640">
+        <source id="videoSource" src="" type="video/mp4">
+      </video>
 
-  <button id="click">click here before watching pleaseee :(</button>
+      <div class="controls-container">
+        <select id="videoList">
+          <option value="preview">Loading videos...</option>
+        </select>
+
+        <button id="readyButton">Ready</button>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <div class="chat-header">Messages</div>
+      <div class="chat-messages">
+        </div>
+    </div>
+
+  </div>
+
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="script.js" defer></script>
 <script src="listener.js" defer></script>
-
 </html>

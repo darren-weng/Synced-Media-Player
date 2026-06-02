@@ -3,13 +3,32 @@ const socket = io();
 const dropdown = document.getElementById("videoList");
 const player = document.getElementById("videoPlayer");
 const videoSource = document.getElementById("videoSource");
+const chatMessages = document.querySelector(".chat-messages");
+const readyButton = document.getElementById("readyButton");
 
 let isSyncing = false; // prevent feedback loops during seeking
+let totalUsersReady = 0; 
+let totalUsers = 0;
 
 function updateLocalVideo(videoName) {
   if (!videoName) return;
   videoSource.src = `/videos/${videoName}`;
   player.load();
+}
+
+function createChatElement(message) {
+  const messageElement = document.createElement("div");
+  messageElement.textContent = message;
+
+  if (!chatMessages) {
+    console.error("Could not find the .chat-messages container!");
+    return;
+  }
+
+  chatMessages.appendChild(messageElement);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  return messageElement;
 }
 
 dropdown.addEventListener("change", (event) => {
@@ -89,4 +108,32 @@ socket.on("video-played-server", (incomingTime) => {
   isSyncing = true;
   player.currentTime = incomingTime;
   player.play();
+});
+
+
+// for user connection and leaving
+socket.on('user-connected', (message) => {
+  console.log(message);
+
+  createChatElement(message);
+});
+
+socket.on('user-disconnected', (message) => {
+  console.log(message);
+
+  createChatElement(message);
+});
+
+// for message ab who's ready
+readyButton.addEventListener("click", () => {
+  socket.emit('user-ready-click');
+
+  readyButton.disabled = true; // disable the button after clicking
+});
+
+socket.on('user-count', (data) => {
+  createChatElement(`Users ready: ${data.ready}/${data.total}`);
+
+  totalUsersReady = data.ready;
+  totalUsers = data.total;
 });
