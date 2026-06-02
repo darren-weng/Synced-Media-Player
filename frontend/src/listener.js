@@ -10,27 +10,6 @@ let isSyncing = false; // prevent feedback loops during seeking
 let totalUsersReady = 0; 
 let totalUsers = 0;
 
-function updateLocalVideo(videoName) {
-  if (!videoName) return;
-  videoSource.src = `/videos/${videoName}`;
-  player.load();
-}
-
-function createChatElement(message) {
-  const messageElement = document.createElement("div");
-  messageElement.textContent = message;
-
-  if (!chatMessages) {
-    console.error("Could not find the .chat-messages container!");
-    return;
-  }
-
-  chatMessages.appendChild(messageElement);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  return messageElement;
-}
-
 dropdown.addEventListener("change", (event) => {
   const selectedVideo = event.target.value;
   console.log("Locally selected video:", selectedVideo);
@@ -109,7 +88,6 @@ socket.on("video-played-server", (incomingTime) => {
   player.currentTime = incomingTime;
   player.play();
 });
-
 
 // for user connection and leaving
 socket.on('user-connected', (message) => {

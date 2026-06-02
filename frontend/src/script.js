@@ -18,5 +18,31 @@ async function fetchVideos() {
   }
 }
 
+//! required to fetch the video list on page load to populate the dropdown
 fetchVideos().then(response => console.log(response));
+
+
+function updateLocalVideo(videoName) {
+  if (!videoName) return;
+  videoSource.src = `/videos/${videoName}`;
+  player.load();
+}
+
+
+function createChatElement(message) {
+  const messageElement = document.createElement("div");
+  messageElement.textContent = message;
+
+  if (!chatMessages) {
+    console.error("Could not find the .chat-messages container!");
+    return;
+  }
+
+  chatMessages.appendChild(messageElement);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  return messageElement;
+}
+
+
 
