@@ -20,7 +20,6 @@ function syncPlayer(action) {
   }, 50);
 }
 
-
 //** EVENT LISTENERS **//
 dropdown.addEventListener("change", (event) => {
   const selectedVideo = event.target.value;
@@ -87,7 +86,7 @@ socket.on("video-seeking-server", (incomingTime) => {
 
 socket.on("video-paused-server", (incomingTime) => {
   console.log(`Server ordered a video pause at: ${incomingTime}s`);
-  
+
   syncPlayer(() => {
     player.currentTime = incomingTime;
     player.pause();
