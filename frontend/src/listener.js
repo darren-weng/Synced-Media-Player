@@ -6,6 +6,9 @@ const videoSource = document.getElementById("videoSource");
 const chatMessages = document.querySelector(".chat-messages");
 const readyButton = document.getElementById("readyButton");
 
+const roomName = window.location.pathname.substring(1);
+if (roomName) socket.emit('join-room', roomName);
+
 let ignoreNextEvent = false; // prevent feedback loops during seeking
 let totalUsersReady = 0; 
 let totalUsers = 0;

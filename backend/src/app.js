@@ -13,73 +13,88 @@ const io = new Server(server);
 const htmlDir = path.join(__dirname, "../../frontend/src");
 const videoDir = path.join(__dirname, "videos");
 
-app.use(express.static(htmlDir));
+app.use(express.static(htmlDir, {index: false}));
 app.use("/videos", express.static(videoDir));
 
-function broadcastUserCount(io) {
-  const totalUsers = io.sockets.sockets.size;
+function broadcastUserCount(io, roomName) {
+  const roomSocketIds = io.sockets.adapter.rooms.get(roomName);  
+  const totalUsers = roomSocketIds?.size || 0;
 
   // Count how many of the currently connected sockets are ready
   let readyCount = 0;
-  io.sockets.sockets.forEach((socket) => {
-      if (socket.data.isReady) {
-          readyCount++;
-      }
-  });
 
-  io.emit('user-count', { ready: readyCount, total: totalUsers });
+  if (roomSocketIds) {
+    roomSocketIds.forEach((socketId) => {
+        const socket = io.sockets.sockets.get(socketId);
+
+        if (socket.data.isReady) {
+            readyCount++;
+        }
+    });
+  }
+
+  io.to(roomName).emit('user-count', { ready: readyCount, total: totalUsers });
 }
 
 io.on('connection', (socket) => {
-    socket.data.isReady = false; // Initialize the ready status for this socket
+    // client tells the server which room they belong to
+    socket.on('join-room', (roomName) => {
+      socket.join(roomName); // Places the socket into a specific Socket.io room
+      socket.currentRoom = roomName; // Custom property to keep track of it
+      console.log(`User ${socket.id} joined room: ${roomName}`);
+      
+      // Optional: Broadcast to others in the room that someone joined
+      socket.to(roomName).emit('user-connected', 'Guest has joined the room');
+      broadcastUserCount(io, socket.currentRoom);
 
-    console.log('A user connected via real-time web socket!');
-    io.emit('user-connected', 'Guest has joined the room.');
+      console.log('A user connected via real-time web socket!');
+    });
 
-    //? update users count
-    broadcastUserCount(io);
+    // Initialize the ready status for this socket
+    socket.data.isReady = false; 
 
     // react to ready click
     socket.on('user-ready-click', () => {
         socket.data.isReady = true; // Mark this socket as ready
-        broadcastUserCount(io); // Update all clients with the new count
+        broadcastUserCount(io, socket.currentRoom); // Update all clients with the new count
     });
 
     // 3. Listen for when a user changes their video dropdown
     socket.on('video-selected-client', (videoName) => {
         console.log(`Broadcasting new video selection: ${videoName}`);
-        
+      
         // 4. Send this filename to EVERY OTHER connected browser tab
-        socket.broadcast.emit('video-selected-server', videoName);
+        socket.to(socket.currentRoom).emit('video-selected-server', videoName);
     });
 
     socket.on('video-seeking-client', (currentTime) => {
         console.log(`Broadcasting new video seek time: ${currentTime}`);
         
-        socket.broadcast.emit('video-seeking-server', currentTime);
+        socket.to(socket.currentRoom).emit('video-seeking-server', currentTime);
     });
 
     socket.on('video-paused-client', (currentTime) => {
         console.log(`Broadcasting new video pause time: ${currentTime}`);
         
-        socket.broadcast.emit('video-paused-server', currentTime);
+        socket.to(socket.currentRoom).emit('video-paused-server', currentTime);
     });
 
     socket.on('video-played-client', (currentTime) => {
         console.log(`Broadcasting new video play time: ${currentTime}`);
         
-        socket.broadcast.emit('video-played-server', currentTime);
+        socket.to(socket.currentRoom).emit('video-played-server', currentTime);
     });
 
     socket.on('disconnect', () => {
         console.log('User disconnected.');
+        io.to(socket.currentRoom).emit('user-disconnected', 'Guest has left the room.');
 
-        io.emit('user-disconnected', 'Guest has left the room.');
+        broadcastUserCount(io, socket.currentRoom);
     });
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(htmlDir, "index.html"));
+  res.sendFile(path.join(htmlDir, "home.html"));
 });
 
 app.get("/api/videos", async (req, res) => {
@@ -90,6 +105,10 @@ app.get("/api/videos", async (req, res) => {
     console.error("Error reading video directory:", err);
     res.status(500).json({ error: "Failed to read video directory" });
   }
+});
+
+app.get('/:roomName', (req, res) => {
+    res.sendFile(path.join(htmlDir, 'index.html'));
 });
 
 vidSelect
