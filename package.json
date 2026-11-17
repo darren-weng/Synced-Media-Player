@@ -1,7 +1,23 @@
 {
+  "name": "synced-media-player",
+  "version": "1.0.0",
+  "description": "Synced Media Player backend and frontend",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "tsx watch backend/src/app.ts",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@ngrok/ngrok": "^1.7.0",
     "express": "^5.2.1",
     "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

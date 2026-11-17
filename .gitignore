@@ -1,9 +1,13 @@
 # Dependencies
 node_modules/
 
+# Build output
+dist/
+
 # Video files
 *.mp4
 
 # Optional common extras
 .env
 .DS_Store
+.agents
