@@ -28,10 +28,38 @@ function createChatElement(message) {
     return;
   }
 
+  // Hide the initial empty state once real messages begin arriving
+  const emptyState = chatMessages.querySelector(".chat-empty-state");
+  if (emptyState) {
+    emptyState.style.display = "none";
+  }
+
   const messageElement = document.createElement("div");
+  messageElement.className = "chat-bubble";
   messageElement.textContent = message;
   chatMessages.appendChild(messageElement);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   return messageElement;
 }
+
+// Initialize room display and title on load
+document.addEventListener("DOMContentLoaded", () => {
+  const roomPath = decodeURIComponent(window.location.pathname.substring(1));
+  const roomNameDisplay = document.getElementById("roomNameDisplay");
+  
+  if (roomNameDisplay) {
+    roomNameDisplay.textContent = roomPath ? `#${roomPath}` : "Room";
+  }
+
+  if (roomPath) {
+    document.title = `${roomPath} — Synced Media Player`;
+  }
+
+  const readyBtn = document.getElementById("readyButton");
+  if (readyBtn) {
+    readyBtn.addEventListener("click", () => {
+      readyBtn.textContent = "Ready ✓";
+    });
+  }
+});

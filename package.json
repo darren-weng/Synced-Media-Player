@@ -2,10 +2,10 @@
   "name": "synced-media-player",
   "version": "1.0.0",
   "description": "Synced Media Player backend and frontend",
-  "main": "dist/app.js",
+  "main": "backend/src/app.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
+    "start": "tsx backend/src/app.ts",
     "dev": "tsx watch backend/src/app.ts",
     "typecheck": "tsc --noEmit"
   },
