@@ -358,8 +358,8 @@ function loadMedia(source, shouldBroadcast = false) {
       if (source.startsWith("http://") || source.startsWith("https://")) {
         targetSrc = normalizeDropboxUrl(source);
       } else {
-        // Server-hosted video from dropdown
-        targetSrc = `/videos/${source}`;
+        // Server-hosted video from dropdown (restricted to server room)
+        targetSrc = `/videos/${encodeURIComponent(source)}?room=server`;
       }
 
       videoSource.src = targetSrc;
@@ -377,13 +377,14 @@ function loadMedia(source, shouldBroadcast = false) {
   if (currentMediaInfo && currentMediaLink) {
     currentMediaInfo.style.display = "block";
     currentMediaLink.textContent = source;
-    currentMediaLink.href = source.startsWith("http") ? source : `/videos/${source}`;
+    const isSafeWebUrl = source.startsWith("http://") || source.startsWith("https://");
+    currentMediaLink.href = isSafeWebUrl ? source : `/videos/${encodeURIComponent(source)}?room=server`;
   }
 
   if (shouldBroadcast) {
     socket.emit("video-selected-client", source);
     if (typeof createChatElement === "function") {
-      createChatElement("You loaded video: " + source);
+      createChatElement("Loaded video: " + source);
     }
   }
 }
@@ -504,5 +505,19 @@ socket.on("user-disconnected", (message) => {
 socket.on("user-count", (data) => {
   if (typeof createChatElement === "function") {
     createChatElement(`Users ready: ${data.ready}/${data.total}`);
+  }
+});
+
+// Real-time chat messages
+socket.on("chat-message-server", (msg) => {
+  if (typeof renderChatMessage === "function") {
+    renderChatMessage(msg);
+  }
+});
+
+// Past 25 chat messages on room join
+socket.on("chat-history-server", (messages) => {
+  if (Array.isArray(messages) && typeof renderChatMessage === "function") {
+    messages.forEach((msg) => renderChatMessage(msg));
   }
 });

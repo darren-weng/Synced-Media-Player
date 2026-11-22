@@ -1,19 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join a Room</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screening Room — Synced Media Lounge</title>
+  
+  <!-- Typography: Bricolage Grotesque (Bold, Punchy Display) & Outfit (Comforting, Clear Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="portal-body">
 
-    <div class="container">
-        <div>Enter a room name to join or create a space:</div>
-        
-        <input type="text" id="room-input" placeholder="e.g., room1, lounge, chilling">
-        <button id="join-button">Join Room</button>
+  <main class="portal-main">
+    <div class="lounge-portal-card">
+      <h1 class="portal-title">Join a Room</h1>
+      <p class="portal-subtitle">watch movies and have fun with friends!</p>
+
+      <form id="join-form" class="portal-form" onsubmit="return false;">
+        <div class="portal-input-wrapper">
+          <span class="portal-input-prefix" aria-hidden="true">#</span>
+          <input 
+            type="text" 
+            id="room-input" 
+            placeholder="room-name" 
+            autocomplete="off" 
+            autofocus 
+            aria-label="Room name"
+            aria-describedby="room-error"
+          >
+          <button id="join-button" type="submit" class="portal-join-btn">
+            <span>Join Room</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Inline error alert -->
+        <div id="room-error" class="portal-error" role="alert" aria-live="polite"></div>
+
+        <!-- Quick suggestion chips -->
+        <div class="portal-suggestions">
+          <span class="suggestions-label">public rooms:</span>
+          <div class="chips-group">
+            <button type="button" class="room-chip" data-room="midnight">#midnight</button>
+            <button type="button" class="room-chip" data-room="cinema">#cinema</button>
+            <button type="button" class="room-chip" data-room="couch-lounge">#couch-lounge</button>
+            <button type="button" class="room-chip" data-room="movie-night">#movie-night</button>
+          </div>
+        </div>
+      </form>
     </div>
-</body>
+  </main>
 
-<script src="redirect.js" defer></script>
+  <script src="redirect.js" defer></script>
+</body>
 </html>

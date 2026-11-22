@@ -5,6 +5,19 @@ export interface UserCountData {
   total: number;
 }
 
+export interface ChatMessage {
+  id: string;
+  sender: string;
+  text: string;
+  timestamp: number;
+  timeFormatted: string;
+}
+
+export interface ClientChatMessageData {
+  sender: string;
+  text: string;
+}
+
 export interface ServerToClientEvents {
   "user-count": (data: UserCountData) => void;
   "user-connected": (message: string) => void;
@@ -13,6 +26,8 @@ export interface ServerToClientEvents {
   "video-seeking-server": (currentTime: number) => void;
   "video-paused-server": (currentTime: number) => void;
   "video-played-server": (currentTime: number) => void;
+  "chat-message-server": (msg: ChatMessage) => void;
+  "chat-history-server": (messages: ChatMessage[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -22,6 +37,7 @@ export interface ClientToServerEvents {
   "video-seeking-client": (currentTime: number) => void;
   "video-paused-client": (currentTime: number) => void;
   "video-played-client": (currentTime: number) => void;
+  "chat-message-client": (data: ClientChatMessageData) => void;
 }
 
 export interface InterServerEvents {

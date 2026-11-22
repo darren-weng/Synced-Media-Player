@@ -3,64 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synced Media Player</title>
+  <title>Synced Media Lounge</title>
   
-  <!-- Typography: Fraunces (characterful soft serif) & Nunito (clean readable sans) -->
+  <!-- Typography: Bricolage Grotesque (Bold, Punchy Display) & Outfit (Comforting, Clear Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Atmospheric floating embers & subtle upward sparkles -->
-  <div class="cozy-embers" aria-hidden="true">
-    <span class="ember e1"></span>
-    <span class="ember e2"></span>
-    <span class="ember e3"></span>
-    <span class="ember e4"></span>
-    <span class="ember e5"></span>
-    <span class="ember e6"></span>
-    <span class="ember e7"></span>
-    <span class="ember e8"></span>
-    <span class="ember-sparkle s1">✦</span>
-    <span class="ember-sparkle s2">✧</span>
-    <span class="ember-sparkle s3">✦</span>
-  </div>
-
-  <!-- Delicate scalloped string lights banner -->
-  <div class="string-lights-banner" aria-hidden="true">
-    <svg class="string-lights-svg" viewBox="0 0 1200 36" preserveAspectRatio="none">
-      <path d="M0,6 Q75,22 150,6 Q225,22 300,6 Q375,22 450,6 Q525,22 600,6 Q675,22 750,6 Q825,22 900,6 Q975,22 1050,6 Q1125,22 1200,6" fill="none" stroke="#DCCEC3" stroke-width="1.5" stroke-dasharray="3 2" />
-      
-      <!-- Pastel glowing bulbs -->
-      <circle cx="75" cy="22" r="5" fill="#F7CCD3" class="light-bulb bulb-blush" />
-      <rect x="73.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="225" cy="22" r="5" fill="#FDE8AF" class="light-bulb bulb-yellow" />
-      <rect x="223.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="375" cy="22" r="5" fill="#FBD8C0" class="light-bulb bulb-peach" />
-      <rect x="373.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="525" cy="22" r="5" fill="#CFDEC8" class="light-bulb bulb-sage" />
-      <rect x="523.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="675" cy="22" r="5" fill="#DDD4F0" class="light-bulb bulb-lavender" />
-      <rect x="673.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="825" cy="22" r="5" fill="#FDE8AF" class="light-bulb bulb-yellow" />
-      <rect x="823.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="975" cy="22" r="5" fill="#F7CCD3" class="light-bulb bulb-blush" />
-      <rect x="973.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-      <circle cx="1125" cy="22" r="5" fill="#FBD8C0" class="light-bulb bulb-peach" />
-      <rect x="1123.5" y="17" width="3" height="3" rx="1" fill="#A89284" />
-    </svg>
-  </div>
-
   <div class="app-layout">
     
-    <!-- Header: Room badge -->
-    <header class="hearth-header">
+    <!-- Header: Room Title (Clickable link back to join page) -->
+    <header class="theater-header">
       <h1 class="room-heading">
-        <span class="room-indicator-dot" aria-hidden="true"></span>
-        <span id="roomNameDisplay">Room</span>
+        <a href="/" class="room-nav-link" title="Return to room selection" aria-label="Return to room selection">
+          <span class="room-indicator-dot" aria-hidden="true"></span>
+          <span id="roomNameDisplay">Room</span>
+        </a>
       </h1>
     </header>
 
@@ -70,7 +32,7 @@
       <!-- Video Section (Left Column) -->
       <section class="video-container">
         
-        <!-- Video Hearth Frame with subtle pulsing firelight glow -->
+        <!-- Cinema Projection Stage -->
         <div class="video-hearth-frame">
           <video id="videoPlayer" controls width="640">
             <source id="videoSource" src="" type="video/mp4">
@@ -81,7 +43,7 @@
           </div>
         </div>
 
-        <!-- Autoplay policy unmute banner -->
+        <!-- Autoplay policy unmute advisory banner -->
         <div id="unmuteBanner" class="unmute-banner">
           <svg class="banner-svg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -89,7 +51,7 @@
             <line x1="17" y1="9" x2="23" y2="15"></line>
           </svg>
           <div class="banner-text">
-            Sound is muted by browser policy. <strong>Click anywhere to unmute</strong>.
+            Sound is muted by browser autoplay policy. <strong>Click anywhere to unmute</strong>.
           </div>
         </div>
 
@@ -98,30 +60,24 @@
 
         <!-- Currently playing media indicator -->
         <div id="currentMediaInfo" class="current-media-info" style="display: none;">
-          <svg class="media-info-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="4"></rect>
-            <path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5"></path>
-          </svg>
           <div class="current-media-details">
-            <span class="current-media-label">Playing:</span>
+            <span class="current-media-label">Now Playing:</span>
             <a id="currentMediaLink" href="#" target="_blank" rel="noopener noreferrer"></a>
           </div>
         </div>
 
-        <!-- Controls Deck -->
+        <!-- Tactile Hi-Fi Controls Deck -->
         <div class="hearth-controls-card">
-          <!-- Server selection row -->
-          <div class="controls-container">
+          <!-- Server video selector row (only active in /server room) -->
+          <div class="controls-container" id="serverControlsRow" style="display: none;">
             <div class="select-wrapper">
               <select id="videoList" aria-label="Select server video">
                 <option value="">Select server video...</option>
               </select>
             </div>
-
-            <button class="ready" id="readyButton">Ready</button>
           </div>
 
-          <!-- URL stream loader row with integrated prefix icon -->
+          <!-- URL stream loader deck -->
           <div class="url-input-container">
             <div class="input-wrapper">
               <span class="input-prefix-icon" aria-hidden="true">
@@ -133,26 +89,73 @@
               <input type="text" id="urlInput" placeholder="Paste YouTube link, Dropbox, or MP4 URL..." aria-label="Video link or URL">
             </div>
             <button id="loadUrlButton" class="ready load-btn">Load URL</button>
+            <button class="ready" id="readyButton">Ready</button>
           </div>
         </div>
 
       </section>
 
-      <!-- Messages Section (Right Column) -->
+      <!-- Lounge Messages Section (Right Column) -->
       <section class="chat-container">
         <div class="chat-header">
-          <svg class="chat-header-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-          <h2 class="chat-header-title">Messages</h2>
+          <div class="chat-header-info">
+            <svg class="chat-header-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <h2 class="chat-header-title">Lounge Messages</h2>
+          </div>
+          <button type="button" id="changeNameBtn" class="chat-name-pill" title="Click to change your nickname">
+            <span class="user-pill-dot" aria-hidden="true"></span>
+            <span id="currentUserNameDisplay">Set Name</span>
+          </button>
         </div>
 
         <div class="chat-messages">
           <div class="chat-empty-state">
-            <svg class="empty-state-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg class="empty-state-svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
             </svg>
-            <p>No messages yet.</p>
+            <p>The lounge is quiet. Send a note to the couch to start the conversation.</p>
+          </div>
+        </div>
+
+        <!-- Chat input bar -->
+        <form id="chatForm" class="chat-input-deck" autocomplete="off">
+          <input 
+            type="text" 
+            id="chatInput" 
+            placeholder="Message the room..." 
+            maxlength="500" 
+            aria-label="Chat message"
+          >
+          <button type="submit" id="chatSendBtn" class="chat-send-btn" aria-label="Send message">
+            <span>Send</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Nickname prompt overlay -->
+        <div id="nicknameModal" class="nickname-modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="nicknamePromptTitle">
+          <div class="nickname-modal-card">
+            <h3 id="nicknamePromptTitle" class="nickname-modal-title">What's your name?</h3>
+            <p class="nickname-modal-desc">Enter a nickname so friends in the lounge know who is messaging.</p>
+            <form id="nicknameForm" class="nickname-modal-form" autocomplete="off">
+              <input 
+                type="text" 
+                id="nicknameInput" 
+                placeholder="Your name or nickname..." 
+                maxlength="30" 
+                required 
+                aria-label="Your nickname"
+              >
+              <div class="nickname-modal-actions">
+                <button type="button" id="cancelNicknameBtn" class="ready" style="display: none;">Cancel</button>
+                <button type="submit" id="saveNicknameBtn" class="ready load-btn">Join Chat</button>
+              </div>
+            </form>
           </div>
         </div>
       </section>
